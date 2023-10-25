@@ -15,8 +15,8 @@ subprojects {
     group = 'me.lucko.luckperms'
     version = '5.4-SNAPSHOT'
 
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = 17
+    targetCompatibility = 17
 
     tasks.withType(JavaCompile).configureEach {
         options.encoding = 'UTF-8'
@@ -40,7 +40,7 @@ subprojects {
         // get the name of the last tag
         def tagInfo = new ByteArrayOutputStream()
         exec {
-            commandLine 'git', 'describe', '--tags'
+            commandLine 'cmd', 'git', 'describe', '--tags'
             standardOutput = tagInfo
         }
         tagInfo = tagInfo.toString()

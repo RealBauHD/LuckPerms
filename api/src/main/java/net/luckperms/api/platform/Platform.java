@@ -75,6 +75,7 @@ public interface Platform {
         SPONGE("Sponge"),
         NUKKIT("Nukkit"),
         VELOCITY("Velocity"),
+        SCULK("Sculk"),
         FABRIC("Fabric"),
         FORGE("Forge"),
         STANDALONE("Standalone");
