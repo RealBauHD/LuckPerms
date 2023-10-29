@@ -45,7 +45,7 @@ public class SculkSchedulerAdapter implements SchedulerAdapter {
 
     public SculkSchedulerAdapter(LPSculkBootstrap bootstrap) {
         this.bootstrap = bootstrap;
-        this.executor = r -> bootstrap.getServer().getScheduler().newTask(bootstrap, r)
+        this.executor = r -> bootstrap.server().scheduler().newTask(bootstrap, r)
                 .delay(0, TimeUnit.MILLISECONDS).schedule();
     }
 
@@ -61,7 +61,7 @@ public class SculkSchedulerAdapter implements SchedulerAdapter {
 
     @Override
     public SchedulerTask asyncLater(Runnable task, long delay, TimeUnit unit) {
-        Scheduler.Task t = this.bootstrap.getServer().getScheduler().newTask(this.bootstrap, task)
+        Scheduler.Task t = this.bootstrap.server().scheduler().newTask(this.bootstrap, task)
                 .delay((int) delay, unit);
         t.schedule();
         this.tasks.add(t);
@@ -70,7 +70,7 @@ public class SculkSchedulerAdapter implements SchedulerAdapter {
 
     @Override
     public SchedulerTask asyncRepeating(Runnable task, long interval, TimeUnit unit) {
-        Scheduler.Task t = this.bootstrap.getServer().getScheduler().newTask(this.bootstrap, task)
+        Scheduler.Task t = this.bootstrap.server().scheduler().newTask(this.bootstrap, task)
                 .delay((int) interval, unit)
                 .repeat((int) interval, unit);
         t.schedule();

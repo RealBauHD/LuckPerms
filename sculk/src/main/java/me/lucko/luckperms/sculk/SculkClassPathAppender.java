@@ -38,6 +38,6 @@ public class SculkClassPathAppender implements ClassPathAppender {
 
     @Override
     public void addJarToClasspath(Path file) {
-        this.bootstrap.getServer().getPluginHandler().addToClassPath(this.bootstrap, file);
+        this.bootstrap.server().pluginHandler().addToClassPath(this.bootstrap, file);
     }
 }

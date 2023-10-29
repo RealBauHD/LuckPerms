@@ -25,7 +25,7 @@
 
 package me.lucko.luckperms.sculk;
 
-import io.github.sculkpowered.server.MinecraftServer;
+import io.github.sculkpowered.server.Server;
 import io.github.sculkpowered.server.entity.player.Player;
 import io.github.sculkpowered.server.event.EventOrder;
 import io.github.sculkpowered.server.event.Subscribe;
@@ -111,7 +111,7 @@ public class LPSculkBootstrap extends Plugin implements LuckPermsBootstrap {
 
     @Subscribe(order = EventOrder.FIRST)
     public void onEnable(ServerInitializeEvent event) {
-        this.logger = new Slf4jPluginLogger(this.getLogger());
+        this.logger = new Slf4jPluginLogger(this.logger());
         this.startTime = Instant.now();
         try {
             this.plugin.load();
@@ -167,7 +167,7 @@ public class LPSculkBootstrap extends Plugin implements LuckPermsBootstrap {
 
     @Override
     public String getServerVersion() {
-        return MinecraftServer.class.getPackage().getImplementationVersion();
+        return Server.class.getPackage().getImplementationVersion();
     }
 
     @Override
@@ -177,7 +177,7 @@ public class LPSculkBootstrap extends Plugin implements LuckPermsBootstrap {
 
     @Override
     public Optional<Player> getPlayer(UUID uniqueId) {
-        return Optional.ofNullable(this.getServer().getPlayer(uniqueId));
+        return Optional.ofNullable(this.server().player(uniqueId));
     }
 
     @Override
@@ -192,32 +192,32 @@ public class LPSculkBootstrap extends Plugin implements LuckPermsBootstrap {
 
     @Override
     public int getPlayerCount() {
-        return this.getServer().getPlayerCount();
+        return this.server().playerCount();
     }
 
     @Override
     public Collection<String> getPlayerList() {
-        Collection<? extends Player> players = this.getServer().getAllPlayers();
+        Collection<? extends Player> players = this.server().onlinePlayers();
         List<String> list = new ArrayList<>(players.size());
         for (Player player : players) {
-            list.add(player.getUsername());
+            list.add(player.name());
         }
         return list;
     }
 
     @Override
     public Collection<UUID> getOnlinePlayers() {
-        Collection<? extends Player> players = this.getServer().getAllPlayers();
+        Collection<? extends Player> players = this.server().onlinePlayers();
         List<UUID> list = new ArrayList<>(players.size());
         for (Player player : players) {
-            list.add(player.getUniqueId());
+            list.add(player.uniqueId());
         }
         return list;
     }
 
     @Override
     public boolean isPlayerOnline(UUID uniqueId) {
-        Player player = this.getServer().getPlayer(uniqueId);
+        Player player = this.server().player(uniqueId);
         return player != null;
     }
 }

@@ -50,7 +50,7 @@ public class SculkContextManager extends ContextManager<Player, Player> {
 
     @Override
     public UUID getUniqueId(Player player) {
-        return player.getUniqueId();
+        return player.uniqueId();
     }
 
     @Override

@@ -31,7 +31,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sculkpowered.server.MinecraftServer;
+import io.github.sculkpowered.server.Server;
 import io.github.sculkpowered.server.command.CommandSource;
 import me.lucko.luckperms.common.command.CommandManager;
 import me.lucko.luckperms.common.command.utils.ArgumentTokenizer;
@@ -51,8 +51,8 @@ public class SculkCommandExecutor extends CommandManager {
     }
 
     public void register() {
-        MinecraftServer server = this.plugin.getBootstrap().getServer();
-        server.getCommandHandler().register(LiteralArgumentBuilder.<CommandSource>literal(PRIMARY_ALIAS)
+        Server server = this.plugin.getBootstrap().server();
+        server.commandHandler().register(LiteralArgumentBuilder.<CommandSource>literal(PRIMARY_ALIAS)
                 .then(RequiredArgumentBuilder.<CommandSource, String>argument("arguments", StringArgumentType.greedyString())
                         .executes(context -> command(context, context.getArgument("arguments", String.class)))
                         .suggests((context, builder) -> {

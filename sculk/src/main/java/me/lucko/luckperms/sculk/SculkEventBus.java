@@ -43,7 +43,7 @@ public class SculkEventBus extends AbstractEventBus<Plugin> {
             return (Plugin) plugin;
         }
 
-        Plugin pluginContainer = this.plugin.getBootstrap().getServer().getPluginHandler().getPlugin((String) plugin);
+        Plugin pluginContainer = this.plugin.getBootstrap().server().pluginHandler().plugin((String) plugin);
         if (pluginContainer != null) {
             return pluginContainer;
         }

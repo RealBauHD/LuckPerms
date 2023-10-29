@@ -48,7 +48,7 @@ public class SculkSenderFactory extends SenderFactory<LPSculkPlugin, CommandSour
     @Override
     protected String getName(CommandSource source) {
         if (source instanceof Player) {
-            return ((Player) source).getUsername();
+            return ((Player) source).name();
         }
         return Sender.CONSOLE_NAME;
     }
@@ -56,7 +56,7 @@ public class SculkSenderFactory extends SenderFactory<LPSculkPlugin, CommandSour
     @Override
     protected UUID getUniqueId(CommandSource source) {
         if (source instanceof Player) {
-            return ((Player) source).getUniqueId();
+            return ((Player) source).uniqueId();
         }
         return Sender.CONSOLE_UUID;
     }
@@ -65,7 +65,7 @@ public class SculkSenderFactory extends SenderFactory<LPSculkPlugin, CommandSour
     protected void sendMessage(CommandSource source, Component message) {
         Locale locale = null;
         if (source instanceof Player) {
-            locale = ((Player) source).getSettings().getLocale();
+            locale = ((Player) source).settings().locale();
         }
         Component rendered = TranslationManager.render(message, locale);
         AdventureCompat.sendMessage(source, rendered);
@@ -84,11 +84,11 @@ public class SculkSenderFactory extends SenderFactory<LPSculkPlugin, CommandSour
 
     @Override
     protected void performCommand(CommandSource source, String command) {
-        getPlugin().getBootstrap().getServer().getCommandHandler().execute(source, command);
+        getPlugin().getBootstrap().server().commandHandler().execute(source, command);
     }
 
     @Override
     protected boolean isConsole(CommandSource sender) {
-        return sender.equals(getPlugin().getBootstrap().getServer().getConsoleCommandSource());
+        return sender.equals(getPlugin().getBootstrap().server().consoleCommandSource());
     }
 }

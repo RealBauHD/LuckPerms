@@ -25,7 +25,7 @@
 
 package me.lucko.luckperms.sculk.messaging;
 
-import io.github.sculkpowered.server.MinecraftServer;
+import io.github.sculkpowered.server.Server;
 import io.github.sculkpowered.server.event.Subscribe;
 import io.github.sculkpowered.server.event.connection.PluginMessageEvent;
 import me.lucko.luckperms.common.messaging.pluginmsg.AbstractPluginMessageMessenger;
@@ -47,30 +47,30 @@ public class PluginMessageMessenger extends AbstractPluginMessageMessenger {
     }
 
     public void init() {
-        MinecraftServer server = this.plugin.getBootstrap().getServer();
-        server.getEventHandler().register(this.plugin.getBootstrap(), this);
+        final Server server = this.plugin.getBootstrap().server();
+        server.eventHandler().register(this.plugin.getBootstrap(), this);
     }
 
     @Override
     public void close() {
-        MinecraftServer server = this.plugin.getBootstrap().getServer();
-        server.getEventHandler().unregister(this.plugin.getBootstrap(), this);
+        final Server server = this.plugin.getBootstrap().server();
+        server.eventHandler().unregister(this.plugin.getBootstrap(), this);
     }
 
     @Override
     protected void sendOutgoingMessage(byte[] buf) {
-        final MinecraftServer server = this.plugin.getBootstrap().getServer();
-        if (server.getPlayerCount() != 0) {
-            server.getAllPlayers().iterator().next().sendPluginMessage(CHANNEL, buf);
+        final Server server = this.plugin.getBootstrap().server();
+        if (server.playerCount() != 0) {
+            server.onlinePlayers().iterator().next().sendPluginMessage(CHANNEL, buf);
         }
     }
 
     @Subscribe
     public void onPluginMessage(PluginMessageEvent event) {
-        if (!event.getIdentifier().equals(CHANNEL)) {
+        if (!event.identifier().equals(CHANNEL)) {
             return;
         }
 
-        this.handleIncomingMessage(event.getData());
+        this.handleIncomingMessage(event.data());
     }
 }

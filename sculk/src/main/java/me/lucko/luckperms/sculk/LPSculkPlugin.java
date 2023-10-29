@@ -99,7 +99,7 @@ public class LPSculkPlugin extends AbstractLuckPermsPlugin {
     @Override
     protected void registerPlatformListeners() {
         this.connectionListener = new SculkConnectionListener(this);
-        this.bootstrap.getServer().getEventHandler().register(this.bootstrap, this.connectionListener);
+        this.bootstrap.server().eventHandler().register(this.bootstrap, this.connectionListener);
     }
 
     @Override
@@ -132,7 +132,7 @@ public class LPSculkPlugin extends AbstractLuckPermsPlugin {
         Set<String> disabledContexts = getConfiguration().get(ConfigKeys.DISABLED_CONTEXTS);
         if (!disabledContexts.contains(DefaultContextKeys.WORLD_KEY)) {
             SculkPlayerCalculator playerCalculator = new SculkPlayerCalculator(this);
-            this.bootstrap.getServer().getEventHandler().register(this.bootstrap, playerCalculator);
+            this.bootstrap.server().eventHandler().register(this.bootstrap, playerCalculator);
             this.contextManager.registerCalculator(playerCalculator);
         }
     }
@@ -166,13 +166,13 @@ public class LPSculkPlugin extends AbstractLuckPermsPlugin {
     public Stream<Sender> getOnlineSenders() {
         return Stream.concat(
                 Stream.of(getConsoleSender()),
-                this.bootstrap.getServer().getAllPlayers().stream().map(p -> this.senderFactory.wrap(p))
+                this.bootstrap.server().onlinePlayers().stream().map(p -> this.senderFactory.wrap(p))
         );
     }
 
     @Override
     public Sender getConsoleSender() {
-        return this.senderFactory.wrap(this.bootstrap.getServer().getConsoleCommandSource());
+        return this.senderFactory.wrap(this.bootstrap.server().consoleCommandSource());
     }
 
     public SculkSenderFactory getSenderFactory() {

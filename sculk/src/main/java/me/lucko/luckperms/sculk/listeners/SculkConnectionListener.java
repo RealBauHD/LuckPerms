@@ -63,51 +63,51 @@ public class SculkConnectionListener extends AbstractConnectionListener {
 
     @Subscribe
     public void handle(PlayerInitialEvent event) {
-        final Player player = event.getPlayer();
-        if (this.deniedLogin.remove(player.getUniqueId())) {
+        final Player player = event.player();
+        if (this.deniedLogin.remove(player.uniqueId())) {
             player.disconnect((Component) AdventureCompat.toPlatformComponent(TranslationManager
-                    .render(Message.LOADING_DATABASE_ERROR.build(), player.getSettings().getLocale())));
+                    .render(Message.LOADING_DATABASE_ERROR.build(), player.settings().locale())));
         }
 
         if (this.plugin.getConfiguration().get(ConfigKeys.DEBUG_LOGINS)) {
-            this.plugin.getLogger().info("Processing pre-login for " + player.getUniqueId() + " - " + player.getUsername());
+            this.plugin.getLogger().info("Processing pre-login for " + player.uniqueId() + " - " + player.name());
         }
 
         try {
-            User user = loadUser(player.getUniqueId(), player.getUsername());
-            recordConnection(player.getUniqueId());
-            event.setPermissionChecker(new PermissionCheckerImpl(user, player));
-            this.plugin.getEventDispatcher().dispatchPlayerLoginProcess(player.getUniqueId(), player.getUsername(), user);
+            User user = loadUser(player.uniqueId(), player.name());
+            recordConnection(player.uniqueId());
+            event.permissionChecker(new PermissionCheckerImpl(user, player));
+            this.plugin.getEventDispatcher().dispatchPlayerLoginProcess(player.uniqueId(), player.name(), user);
         } catch (Exception ex) {
-            this.plugin.getLogger().severe("Exception occurred whilst loading data for " + player.getUniqueId() + " - " + player.getUsername(), ex);
+            this.plugin.getLogger().severe("Exception occurred whilst loading data for " + player.uniqueId() + " - " + player.name(), ex);
             if (this.plugin.getConfiguration().get(ConfigKeys.CANCEL_FAILED_LOGINS)) {
-                this.deniedLogin.add(player.getUniqueId());
+                this.deniedLogin.add(player.uniqueId());
             }
-            this.plugin.getEventDispatcher().dispatchPlayerLoginProcess(player.getUniqueId(), player.getUsername(), null);
+            this.plugin.getEventDispatcher().dispatchPlayerLoginProcess(player.uniqueId(), player.name(), null);
         }
     }
 
     @Subscribe
-    public void onPlayerPostLogin(PlayerJoinEvent e) {
-        final Player player = e.getPlayer();
-        final User user = this.plugin.getUserManager().getIfLoaded(e.getPlayer().getUniqueId());
+    public void onPlayerPostLogin(PlayerJoinEvent event) {
+        final Player player = event.player();
+        final User user = this.plugin.getUserManager().getIfLoaded(player.uniqueId());
 
         if (this.plugin.getConfiguration().get(ConfigKeys.DEBUG_LOGINS)) {
-            this.plugin.getLogger().info("Processing post-login for " + player.getUniqueId() + " - " + player.getUsername());
+            this.plugin.getLogger().info("Processing post-login for " + player.uniqueId() + " - " + player.name());
         }
 
         if (user == null) {
-            if (!getUniqueConnections().contains(player.getUniqueId())) {
-                this.plugin.getLogger().warn("User " + player.getUniqueId() + " - " + player.getUsername() +
+            if (!getUniqueConnections().contains(player.uniqueId())) {
+                this.plugin.getLogger().warn("User " + player.uniqueId() + " - " + player.name() +
                         " doesn't have data pre-loaded, they have never been processed during pre-login in this session.");
             } else {
-                this.plugin.getLogger().warn("User " + player.getUniqueId() + " - " + player.getUsername() +
+                this.plugin.getLogger().warn("User " + player.uniqueId() + " - " + player.name() +
                         " doesn't currently have data pre-loaded, but they have been processed before in this session.");
             }
 
             if (this.plugin.getConfiguration().get(ConfigKeys.CANCEL_FAILED_LOGINS)) {
                 // disconnect the user
-                player.disconnect(TranslationManager.render(Message.LOADING_STATE_ERROR.build(), player.getSettings().getLocale()));
+                player.disconnect(TranslationManager.render(Message.LOADING_STATE_ERROR.build(), player.settings().locale()));
             } else {
                 // just send a message
                 this.plugin.getBootstrap().getScheduler().asyncLater(() -> {
@@ -118,8 +118,8 @@ public class SculkConnectionListener extends AbstractConnectionListener {
     }
 
     @Subscribe(order = EventOrder.LAST)
-    public void onPlayerQuit(PlayerDisconnectEvent e) {
-        handleDisconnect(e.getPlayer().getUniqueId());
+    public void onPlayerQuit(PlayerDisconnectEvent event) {
+        handleDisconnect(event.player().uniqueId());
     }
 
     private class PermissionCheckerImpl implements PermissionChecker {
