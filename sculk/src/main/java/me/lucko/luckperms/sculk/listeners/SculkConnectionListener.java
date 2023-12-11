@@ -110,9 +110,8 @@ public class SculkConnectionListener extends AbstractConnectionListener {
                 player.disconnect(TranslationManager.render(Message.LOADING_STATE_ERROR.build(), player.settings().locale()));
             } else {
                 // just send a message
-                this.plugin.getBootstrap().getScheduler().asyncLater(() -> {
-                    Message.LOADING_STATE_ERROR.send(this.plugin.getSenderFactory().wrap(player));
-                }, 1, TimeUnit.SECONDS);
+                this.plugin.getBootstrap().getScheduler().asyncLater(() ->
+                        Message.LOADING_STATE_ERROR.send(this.plugin.getSenderFactory().wrap(player)), 1, TimeUnit.SECONDS);
             }
         }
     }
