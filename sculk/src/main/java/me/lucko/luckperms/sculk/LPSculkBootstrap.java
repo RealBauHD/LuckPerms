@@ -41,7 +41,6 @@ import me.lucko.luckperms.common.plugin.scheduler.SchedulerAdapter;
 import net.luckperms.api.platform.Platform;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
@@ -172,7 +171,7 @@ public class LPSculkBootstrap extends Plugin implements LuckPermsBootstrap {
 
     @Override
     public Path getDataDirectory() {
-        return Paths.get("plugins", "LuckPerms").toAbsolutePath();
+        return this.dataDirectory().toAbsolutePath();
     }
 
     @Override
