@@ -39,9 +39,7 @@ import me.lucko.luckperms.common.plugin.util.AbstractConnectionListener;
 import me.lucko.luckperms.common.verbose.event.CheckOrigin;
 import me.lucko.luckperms.sculk.LPSculkPlugin;
 import me.lucko.luckperms.sculk.service.CompatibilityUtil;
-import me.lucko.luckperms.sculk.util.AdventureCompat;
 import net.kyori.adventure.permission.PermissionChecker;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.util.TriState;
 import org.jetbrains.annotations.NotNull;
 
@@ -65,8 +63,8 @@ public class SculkConnectionListener extends AbstractConnectionListener {
     public void handle(PlayerInitialEvent event) {
         final Player player = event.player();
         if (this.deniedLogin.remove(player.uniqueId())) {
-            player.disconnect((Component) AdventureCompat.toPlatformComponent(TranslationManager
-                    .render(Message.LOADING_DATABASE_ERROR.build(), player.settings().locale())));
+            player.disconnect(TranslationManager
+                    .render(Message.LOADING_DATABASE_ERROR.build(), player.settings().locale()));
         }
 
         if (this.plugin.getConfiguration().get(ConfigKeys.DEBUG_LOGINS)) {

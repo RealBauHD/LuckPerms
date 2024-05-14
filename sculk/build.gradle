@@ -26,11 +26,6 @@ shadowJar {
         include(dependency("net.luckperms:.*"))
         include(dependency("me.lucko.luckperms:.*"))
     }
-    relocate("net.kyori.adventure", "me.lucko.luckperms.lib.adventure") {
-        exclude("net.kyori.adventure.permission.PermissionChecker")
-        exclude("net.kyori.adventure.util.TriState")
-        exclude("net.kyori.adventure.text.logger.slf4j.ComponentLogger")
-    }
     relocate("net.kyori.event", "me.lucko.luckperms.lib.eventbus")
     relocate("com.github.benmanes.caffeine", "me.lucko.luckperms.lib.caffeine")
     relocate("okio", "me.lucko.luckperms.lib.okio")

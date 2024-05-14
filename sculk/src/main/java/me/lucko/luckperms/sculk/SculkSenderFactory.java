@@ -31,7 +31,6 @@ import me.lucko.luckperms.common.locale.TranslationManager;
 import me.lucko.luckperms.common.sender.Sender;
 import me.lucko.luckperms.common.sender.SenderFactory;
 import me.lucko.luckperms.sculk.service.CompatibilityUtil;
-import me.lucko.luckperms.sculk.util.AdventureCompat;
 import net.kyori.adventure.permission.PermissionChecker;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.util.TriState;
@@ -68,7 +67,7 @@ public class SculkSenderFactory extends SenderFactory<LPSculkPlugin, CommandSour
             locale = ((Player) source).settings().locale();
         }
         Component rendered = TranslationManager.render(message, locale);
-        AdventureCompat.sendMessage(source, rendered);
+        source.sendMessage(rendered);
     }
 
     @Override

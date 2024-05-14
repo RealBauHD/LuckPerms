@@ -49,6 +49,7 @@ import net.luckperms.api.LuckPerms;
 import net.luckperms.api.context.DefaultContextKeys;
 import net.luckperms.api.query.QueryOptions;
 
+import java.util.EnumSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -83,12 +84,15 @@ public class LPSculkPlugin extends AbstractLuckPermsPlugin {
 
     @Override
     protected Set<Dependency> getGlobalDependencies() {
-        Set<Dependency> dependencies = super.getGlobalDependencies();
-        // required for loading the LP config
-        dependencies.add(Dependency.CONFIGURATE_CORE);
-        dependencies.add(Dependency.CONFIGURATE_YAML);
-        dependencies.add(Dependency.SNAKEYAML);
-        return dependencies;
+        return EnumSet.of(Dependency.CAFFEINE,
+                Dependency.OKIO,
+                Dependency.OKHTTP,
+                Dependency.BYTEBUDDY,
+                Dependency.EVENT,
+                // required for loading the LP config
+                Dependency.CONFIGURATE_CORE,
+                Dependency.CONFIGURATE_YAML,
+                Dependency.SNAKEYAML);
     }
 
     @Override
